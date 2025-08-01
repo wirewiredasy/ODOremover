@@ -68,6 +68,9 @@ export class MemStorage implements IStorage {
       ...insertAudioFile,
       id,
       uploadedAt: new Date(),
+      userId: insertAudioFile.userId || null,
+      duration: insertAudioFile.duration || null,
+      metadata: insertAudioFile.metadata || null,
     };
     this.audioFiles.set(id, audioFile);
     return audioFile;
@@ -101,6 +104,13 @@ export class MemStorage implements IStorage {
       id,
       createdAt: new Date(),
       completedAt: null,
+      userId: insertJob.userId || null,
+      audioFileId: insertJob.audioFileId || null,
+      status: insertJob.status || "pending",
+      progress: insertJob.progress || 0,
+      parameters: insertJob.parameters || null,
+      outputFilePath: insertJob.outputFilePath || null,
+      errorMessage: insertJob.errorMessage || null,
     };
     this.processingJobs.set(id, job);
     return job;

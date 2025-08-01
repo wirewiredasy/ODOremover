@@ -1,4 +1,4 @@
-import type { Express } from "express";
+import type { Express, Request } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import multer from "multer";
@@ -6,13 +6,17 @@ import path from "path";
 import fs from "fs";
 import { insertAudioFileSchema, insertProcessingJobSchema, AUDIO_TOOLS } from "@shared/schema";
 
+interface MulterFileRequest extends Request {
+  file?: Express.Multer.File;
+}
+
 // Configure multer for file uploads
 const upload = multer({
   dest: 'uploads/',
   limits: {
     fileSize: 100 * 1024 * 1024, // 100MB limit
   },
-  fileFilter: (req, file, cb) => {
+  fileFilter: (req: Request, file: Express.Multer.File, cb: multer.FileFilterCallback) => {
     const allowedTypes = ['.mp3', '.wav', '.flac', '.m4a'];
     const ext = path.extname(file.originalname).toLowerCase();
     if (allowedTypes.includes(ext)) {
@@ -26,7 +30,7 @@ const upload = multer({
 export async function registerRoutes(app: Express): Promise<Server> {
   
   // Upload audio file
-  app.post("/api/audio/upload", upload.single('audio'), async (req, res) => {
+  app.post("/api/audio/upload", upload.single('audio'), async (req: MulterFileRequest, res) => {
     try {
       if (!req.file) {
         return res.status(400).json({ error: "No file uploaded" });
