@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -24,15 +26,13 @@
   --ring: hsl(240, 4.9%, 83.9%);
   --radius: 0.5rem;
   
-  /* Custom ODOREMOVER colors */
-  --dark-900: hsl(240, 40%, 6%);
-  --dark-800: hsl(240, 35%, 11%);
-  --dark-700: hsl(240, 25%, 17%);
-  --neon-cyan: hsl(187, 100%, 50%);
-  --neon-pink: hsl(350, 100%, 70%);
-  --primary-500: hsl(247, 83%, 60%);
-  --primary-600: hsl(250, 85%, 55%);
-  --secondary-500: hsl(271, 81%, 56%);
+  /* ODOREMOVER Brand Colors */
+  --odo-primary: hsl(262, 83%, 58%);
+  --odo-primary-light: hsl(262, 83%, 68%);
+  --odo-gradient-start: hsl(220, 80%, 15%);
+  --odo-gradient-end: hsl(10, 20%, 5%);
+  --odo-card-bg: hsl(220, 15%, 8%);
+  --odo-border: hsl(220, 20%, 15%);
 }
 
 .dark {
@@ -63,59 +63,143 @@
   }
 
   body {
-    @apply font-sans antialiased bg-background text-foreground;
-    background: linear-gradient(135deg, var(--dark-900) 0%, var(--dark-800) 50%, var(--dark-700) 100%);
+    @apply antialiased;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: linear-gradient(135deg, var(--odo-gradient-start) 0%, var(--odo-gradient-end) 100%);
     min-height: 100vh;
+    color: #ffffff;
   }
 }
 
 @layer components {
-  .glass {
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
+  .odo-container {
+    @apply max-w-4xl mx-auto px-4 py-6;
   }
-  
-  .glass-dark {
-    background: rgba(26, 26, 46, 0.6);
-    backdrop-filter: blur(15px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+
+  .odo-card {
+    background: var(--odo-card-bg);
+    border: 1px solid var(--odo-border);
+    @apply rounded-xl shadow-2xl backdrop-blur-sm;
+    transition: all 0.3s ease;
   }
-  
-  .gradient-primary {
-    background: linear-gradient(135deg, var(--primary-500) 0%, var(--secondary-500) 100%);
+
+  .odo-header {
+    background: var(--odo-primary);
+    @apply relative overflow-hidden;
   }
-  
-  .gradient-bg {
-    background: linear-gradient(135deg, var(--dark-900) 0%, var(--dark-800) 50%, var(--dark-700) 100%);
+
+  .odo-header::before {
+    content: "";
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
+    animation: pulse-glow 4s ease-in-out infinite alternate;
   }
-  
-  .waveform-container {
-    background: rgba(0, 245, 255, 0.1);
-    border: 1px solid rgba(0, 245, 255, 0.3);
+
+  .odo-tool-card {
+    @apply bg-gray-800/50 border border-gray-700/50 rounded-lg p-4 transition-all duration-300 cursor-pointer relative overflow-hidden;
   }
-  
-  .tool-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 20px 40px rgba(79, 70, 229, 0.3);
+
+  .odo-tool-card:hover {
+    @apply bg-gray-700/70 shadow-lg transform translate-x-1;
+    border-color: var(--odo-primary);
   }
-  
-  .upload-zone {
-    border: 2px dashed rgba(0, 245, 255, 0.5);
-    background: radial-gradient(circle at center, rgba(0, 245, 255, 0.1) 0%, transparent 70%);
+
+  .odo-tool-card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 3px;
+    height: 100%;
+    background: var(--odo-primary);
+    transform: scaleY(0);
+    transform-origin: top;
+    transition: transform 0.3s ease;
   }
-  
-  .upload-zone.dragover {
-    border-color: var(--neon-cyan);
-    background: radial-gradient(circle at center, rgba(0, 245, 255, 0.2) 0%, rgba(79, 70, 229, 0.1) 70%);
+
+  .odo-tool-card:hover::before {
+    transform: scaleY(1);
   }
-  
-  .slider-track {
-    background: linear-gradient(90deg, var(--primary-500) 0%, var(--secondary-500) 100%);
+
+  .odo-tool-title {
+    @apply font-semibold text-white mb-1;
   }
-  
-  .processing-indicator {
-    background: conic-gradient(from 0deg, var(--primary-500), var(--secondary-500), var(--neon-cyan), var(--primary-500));
+
+  .odo-tool-desc {
+    @apply text-sm text-gray-400 mb-3;
+  }
+
+  .odo-tool-value {
+    @apply font-bold text-sm opacity-0 transform translate-x-2 transition-all duration-300;
+    color: var(--odo-primary-light);
+  }
+
+  .odo-tool-card:hover .odo-tool-value {
+    @apply opacity-100 transform translate-x-0;
+  }
+
+  .odo-waveform {
+    @apply flex items-end justify-center gap-1 my-6;
+  }
+
+  .odo-wave-bar {
+    @apply w-1 bg-green-400 rounded-full;
+    animation: wave-animation 1.5s ease-in-out infinite;
+  }
+
+  .odo-cta-button {
+    @apply w-full py-4 px-6 rounded-xl font-semibold text-white transition-all duration-300 transform;
+    background: linear-gradient(45deg, var(--odo-primary) 0%, #9333ea 100%);
+    box-shadow: 0 4px 15px rgba(147, 51, 234, 0.3);
+  }
+
+  .odo-cta-button:hover {
+    @apply transform -translate-y-1;
+    box-shadow: 0 6px 20px rgba(147, 51, 234, 0.4);
+  }
+
+  .odo-nav-link {
+    @apply text-gray-300 hover:text-white transition-colors duration-200;
+  }
+
+  .odo-gradient-logo {
+    @apply w-6 h-6 rounded-lg flex items-center justify-center;
+    background: linear-gradient(45deg, #10b981, #3b82f6);
+  }
+}
+
+@keyframes pulse-glow {
+  0% { 
+    transform: scale(0.9); 
+    opacity: 0.3; 
+  }
+  100% { 
+    transform: scale(1.1); 
+    opacity: 0.7; 
+  }
+}
+
+@keyframes wave-animation {
+  0%, 100% { 
+    height: 8px; 
+  }
+  50% { 
+    height: 24px; 
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
