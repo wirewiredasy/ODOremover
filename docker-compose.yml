@@ -1,0 +1,67 @@
+version: '3.8'
+
+services:
+  # Frontend (React + Vite)
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+    ports:
+      - "5000:5000"
+    environment:
+      - NODE_ENV=development
+      - VITE_API_URL=http://backend:8000
+    volumes:
+      - ./client:/app/client
+      - ./shared:/app/shared
+    depends_on:
+      - backend
+    networks:
+      - odoremover-network
+
+  # Backend (FastAPI)
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+    ports:
+      - "8000:8000"
+    environment:
+      - NODE_ENV=development
+      - PORT=8000
+    volumes:
+      - ./backend:/app/backend
+      - ./uploads:/app/uploads
+      - ./processed:/app/processed
+    networks:
+      - odoremover-network
+
+  # Optional: Redis for job queuing (uncomment if needed)
+  # redis:
+  #   image: redis:7-alpine
+  #   ports:
+  #     - "6379:6379"
+  #   networks:
+  #     - odoremover-network
+
+  # Optional: PostgreSQL database (uncomment if needed)
+  # postgres:
+  #   image: postgres:15-alpine
+  #   environment:
+  #     POSTGRES_DB: odoremover
+  #     POSTGRES_USER: odoremover
+  #     POSTGRES_PASSWORD: odoremover123
+  #   ports:
+  #     - "5432:5432"
+  #   volumes:
+  #     - postgres_data:/var/lib/postgresql/data
+  #   networks:
+  #     - odoremover-network
+
+networks:
+  odoremover-network:
+    driver: bridge
+
+volumes:
+  postgres_data:
+    driver: local
