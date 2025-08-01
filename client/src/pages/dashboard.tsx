@@ -75,6 +75,150 @@ export default function Dashboard() {
           </motion.div>
         ))}
       </div>
+
+      {/* 3D Pre-Footer Section */}
+      <div className="relative mt-20 mb-10 mx-8">
+        <div className="bg-gradient-to-r from-purple-900 via-blue-900 to-indigo-900 rounded-3xl overflow-hidden relative">
+          {/* 3D Background Effects */}
+          <div className="absolute inset-0 bg-gradient-to-br from-transparent via-purple-800/20 to-blue-800/30"></div>
+          <div className="absolute top-0 left-0 w-full h-full opacity-20">
+            <div className="absolute top-10 left-10 w-32 h-32 bg-blue-500 rounded-full blur-3xl"></div>
+            <div className="absolute bottom-10 right-10 w-40 h-40 bg-purple-500 rounded-full blur-3xl"></div>
+            <div className="absolute top-1/2 left-1/2 w-24 h-24 bg-green-400 rounded-full blur-2xl"></div>
+          </div>
+          
+          <div className="relative z-10 p-12">
+            <div className="text-center mb-12">
+              <motion.h2 
+                className="text-4xl font-bold text-white mb-4"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6 }}
+              >
+                Transform Your Audio Experience
+              </motion.h2>
+              <motion.p 
+                className="text-xl text-gray-300 max-w-2xl mx-auto"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.2 }}
+              >
+                Join thousands of creators using ODOREMOVER's advanced audio processing technology
+              </motion.p>
+            </div>
+
+            {/* Stats Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
+              <motion.div 
+                className="text-center p-6 bg-white/10 backdrop-blur-md rounded-2xl border border-white/20 shadow-2xl"
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.1 }}
+                whileHover={{ scale: 1.05, rotateY: 5 }}
+                style={{ transformStyle: "preserve-3d" }}
+              >
+                <div className="text-3xl font-bold text-green-400 mb-2">1M+</div>
+                <div className="text-sm text-gray-300">Files Processed</div>
+              </motion.div>
+
+              <motion.div 
+                className="text-center p-6 bg-white/10 backdrop-blur-md rounded-2xl border border-white/20 shadow-2xl"
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.2 }}
+                whileHover={{ scale: 1.05, rotateY: 5 }}
+                style={{ transformStyle: "preserve-3d" }}
+              >
+                <div className="text-3xl font-bold text-blue-400 mb-2">500K+</div>
+                <div className="text-sm text-gray-300">Active Users</div>
+              </motion.div>
+
+              <motion.div 
+                className="text-center p-6 bg-white/10 backdrop-blur-md rounded-2xl border border-white/20 shadow-2xl"
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.3 }}
+                whileHover={{ scale: 1.05, rotateY: 5 }}
+                style={{ transformStyle: "preserve-3d" }}
+              >
+                <div className="text-3xl font-bold text-purple-400 mb-2">99.9%</div>
+                <div className="text-sm text-gray-300">Uptime</div>
+              </motion.div>
+
+              <motion.div 
+                className="text-center p-6 bg-white/10 backdrop-blur-md rounded-2xl border border-white/20 shadow-2xl"
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.4 }}
+                whileHover={{ scale: 1.05, rotateY: 5 }}
+                style={{ transformStyle: "preserve-3d" }}
+              >
+                <div className="text-3xl font-bold text-yellow-400 mb-2">10</div>
+                <div className="text-sm text-gray-300">AI Tools</div>
+              </motion.div>
+            </div>
+
+            {/* Feature Highlights */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+              <motion.div 
+                className="p-6 bg-gradient-to-br from-green-500/20 to-blue-500/20 rounded-2xl border border-green-400/30 backdrop-blur-sm"
+                initial={{ opacity: 0, x: -30 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.6, delay: 0.2 }}
+                whileHover={{ scale: 1.02, rotateX: 5 }}
+                style={{ transformStyle: "preserve-3d" }}
+              >
+                <div className="text-2xl mb-3">🚀</div>
+                <h3 className="text-lg font-semibold text-white mb-2">Lightning Fast</h3>
+                <p className="text-gray-300 text-sm">Process audio files in seconds with our optimized AI algorithms</p>
+              </motion.div>
+
+              <motion.div 
+                className="p-6 bg-gradient-to-br from-purple-500/20 to-pink-500/20 rounded-2xl border border-purple-400/30 backdrop-blur-sm"
+                initial={{ opacity: 0, y: -30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.3 }}
+                whileHover={{ scale: 1.02, rotateX: 5 }}
+                style={{ transformStyle: "preserve-3d" }}
+              >
+                <div className="text-2xl mb-3">🎯</div>
+                <h3 className="text-lg font-semibold text-white mb-2">Precision Quality</h3>
+                <p className="text-gray-300 text-sm">Studio-grade processing with lossless quality preservation</p>
+              </motion.div>
+
+              <motion.div 
+                className="p-6 bg-gradient-to-br from-blue-500/20 to-cyan-500/20 rounded-2xl border border-blue-400/30 backdrop-blur-sm"
+                initial={{ opacity: 0, x: 30 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.6, delay: 0.4 }}
+                whileHover={{ scale: 1.02, rotateX: 5 }}
+                style={{ transformStyle: "preserve-3d" }}
+              >
+                <div className="text-2xl mb-3">🔒</div>
+                <h3 className="text-lg font-semibold text-white mb-2">Secure & Private</h3>
+                <p className="text-gray-300 text-sm">Your files are processed securely and never stored permanently</p>
+              </motion.div>
+            </div>
+
+            {/* CTA Section */}
+            <motion.div 
+              className="text-center"
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.5 }}
+            >
+              <motion.button 
+                className="bg-gradient-to-r from-green-500 to-blue-600 text-white px-12 py-4 rounded-full font-bold text-lg shadow-2xl hover:shadow-green-500/25 transition-all duration-300"
+                whileHover={{ scale: 1.05, boxShadow: "0 20px 40px rgba(34, 197, 94, 0.3)" }}
+                whileTap={{ scale: 0.95 }}
+              >
+                Start Processing Audio Now
+              </motion.button>
+              <p className="text-gray-400 text-sm mt-4">No registration required • Free to start</p>
+            </motion.div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

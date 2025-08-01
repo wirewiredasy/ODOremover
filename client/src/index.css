@@ -72,7 +72,34 @@
 }
 
 @layer components {
-  /* Clean, minimal components for the new design */
+  /* 3D Transform Effects */
+  .transform-3d {
+    transform-style: preserve-3d;
+  }
+  
+  .rotate-y-12 {
+    transform: rotateY(12deg);
+  }
+  
+  .rotate-x-12 {
+    transform: rotateX(12deg);
+  }
+  
+  /* Glassmorphism Effects */
+  .glass-card {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+  }
+  
+  /* Gradient Text */
+  .gradient-text {
+    background: linear-gradient(45deg, #10b981, #3b82f6, #8b5cf6);
+    background-size: 200% 200%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: gradient-shift 3s ease infinite;
+  }
 }
 
 @keyframes pulse-glow {
@@ -103,6 +130,24 @@
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+@keyframes gradient-shift {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+@keyframes float-3d {
+  0%, 100% {
+    transform: translateY(0px) rotateX(0deg);
+  }
+  50% {
+    transform: translateY(-10px) rotateX(5deg);
   }
 }
 
