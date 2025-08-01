@@ -72,33 +72,69 @@
 }
 
 @layer components {
-  /* 3D Transform Effects */
-  .transform-3d {
+  /* Professional Interface Styling */
+  .odo-header {
+    background: linear-gradient(135deg, rgba(88, 28, 135, 0.9), rgba(30, 41, 59, 0.9));
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(139, 92, 246, 0.2);
+  }
+  
+  .odo-hero-gradient {
+    background: linear-gradient(135deg, #000000 0%, #1a1a2e 50%, #16213e 100%);
+  }
+  
+  .odo-tool-card {
+    background: rgba(17, 24, 39, 0.7);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(75, 85, 99, 0.3);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .odo-tool-card:hover {
+    background: rgba(31, 41, 55, 0.8);
+    border-color: rgba(139, 92, 246, 0.5);
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 20px 40px rgba(139, 92, 246, 0.15);
+  }
+  
+  .odo-stats-section {
+    background: linear-gradient(135deg, 
+      rgba(88, 28, 135, 0.3) 0%, 
+      rgba(30, 64, 175, 0.3) 50%, 
+      rgba(67, 56, 202, 0.3) 100%);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(139, 92, 246, 0.2);
+  }
+  
+  .odo-stat-card {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     transform-style: preserve-3d;
   }
   
-  .rotate-y-12 {
-    transform: rotateY(12deg);
+  .odo-stat-card:hover {
+    transform: scale(1.05) rotateY(5deg);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
   }
   
-  .rotate-x-12 {
-    transform: rotateX(12deg);
+  .odo-waveform-bar {
+    background: linear-gradient(to top, #10b981, #3b82f6);
+    border-radius: 2px;
+    animation: wave-pulse 2s ease-in-out infinite;
   }
   
-  /* Glassmorphism Effects */
-  .glass-card {
-    background: rgba(255, 255, 255, 0.1);
+  .odo-feature-card {
+    background: linear-gradient(135deg, 
+      rgba(255, 255, 255, 0.1) 0%, 
+      rgba(255, 255, 255, 0.05) 100%);
     backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.2);
+    transform-style: preserve-3d;
   }
   
-  /* Gradient Text */
-  .gradient-text {
-    background: linear-gradient(45deg, #10b981, #3b82f6, #8b5cf6);
-    background-size: 200% 200%;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    animation: gradient-shift 3s ease infinite;
+  .odo-feature-card:hover {
+    transform: scale(1.02) rotateX(5deg);
   }
 }
 
@@ -148,6 +184,26 @@
   }
   50% {
     transform: translateY(-10px) rotateX(5deg);
+  }
+}
+
+@keyframes wave-pulse {
+  0%, 100% {
+    transform: scaleY(0.4);
+    opacity: 0.7;
+  }
+  50% {
+    transform: scaleY(1);
+    opacity: 1;
+  }
+}
+
+@keyframes neon-glow {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(34, 197, 94, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 30px rgba(34, 197, 94, 0.6), 0 0 40px rgba(59, 130, 246, 0.4);
   }
 }
 
