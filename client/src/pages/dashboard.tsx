@@ -178,94 +178,179 @@ export default function Dashboard() {
         </div>
       </section>
 
-      {/* Premium 3D Stats Section */}
+      {/* Exact Prefooter Design - Step by Step Implementation */}
       <section className="py-20 px-8">
-        <div className="max-w-7xl mx-auto">
-          <div className="bg-gradient-to-r from-purple-900/50 via-blue-900/50 to-indigo-900/50 rounded-3xl backdrop-blur-xl border border-purple-500/20 overflow-hidden relative">
-            {/* Background Effects */}
-            <div className="absolute inset-0">
-              <div className="absolute top-10 left-10 w-32 h-32 bg-blue-500/30 rounded-full blur-3xl"></div>
-              <div className="absolute bottom-10 right-10 w-40 h-40 bg-purple-500/30 rounded-full blur-3xl"></div>
-              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-24 h-24 bg-green-400/30 rounded-full blur-2xl"></div>
+        <div className="max-w-7xl mx-auto space-y-6">
+          
+          {/* Top Section (Dark) */}
+          <motion.div 
+            className="bg-gray-900 text-white p-8 flex flex-col md:flex-row justify-between items-center rounded-xl"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+          >
+            <div className="text-left">
+              <h1 className="text-5xl font-bold mb-2">Oudio Remover</h1>
+              <p className="text-sm opacity-60 mb-6">Music Open Tool Freeway & Basic Feature</p>
+              <div className="flex space-x-3">
+                <button className="bg-gradient-to-r from-purple-500 to-orange-400 px-6 py-3 rounded-lg text-white font-semibold hover:scale-105 transition-transform">
+                  Oudio Rem
+                </button>
+                <button className="bg-gray-800 hover:bg-gray-700 px-6 py-3 rounded-lg text-white transition-colors">
+                  Cootds
+                </button>
+              </div>
+            </div>
+            <div className="relative mt-8 md:mt-0">
+              <div className="w-40 h-40 bg-gradient-to-br from-blue-400 to-purple-600 rounded-2xl flex items-center justify-center text-white text-6xl font-bold">
+                👤
+              </div>
+              <div className="absolute top-2 left-2 bg-black/60 px-3 py-1 rounded-md text-xs backdrop-blur-sm">
+                Pitho
+              </div>
+              <div className="absolute top-12 left-2 bg-black/60 px-3 py-1 rounded-md text-xs backdrop-blur-sm">
+                Palter Bu
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Mid Section (White) */}
+          <motion.div 
+            className="bg-white p-8 grid grid-cols-1 md:grid-cols-2 gap-8 rounded-xl shadow-lg"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+          >
+            <div className="flex justify-center">
+              <div className="w-48 h-48 bg-gradient-to-br from-gray-300 to-gray-500 rounded-xl shadow-md flex items-center justify-center text-gray-600 text-7xl">
+                👨‍💼
+              </div>
+            </div>
+            <div className="text-black">
+              <h2 className="text-3xl font-bold mb-2">Features</h2>
+              <p className="text-lg text-gray-600 mb-4">Pithu (Phase 1 – Free 2-Stem)</p>
+              <p className="text-gray-500 mb-6 leading-relaxed">
+                Advanced AI-powered audio processing tools designed for professional music production. 
+                Extract vocals, adjust tempo, and convert formats with studio-grade quality.
+              </p>
+              <div className="flex flex-wrap gap-4 text-sm text-gray-500">
+                <span className="px-3 py-1 bg-gray-100 rounded-full">Airicbu</span>
+                <span className="px-3 py-1 bg-gray-100 rounded-full">Dl Toor Pahe</span>
+                <span className="px-3 py-1 bg-gray-100 rounded-full">XQ O4</span>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Bottom Section (Cards with Gradient Backgrounds) */}
+          <motion.div 
+            className="grid grid-cols-1 md:grid-cols-3 gap-6"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+          >
+            <div className="bg-gradient-to-r from-purple-300 to-orange-200 p-6 rounded-xl text-gray-800 hover:scale-105 transition-transform">
+              <div className="flex items-center mb-4">
+                <div className="w-8 h-8 bg-white/20 rounded-lg flex items-center justify-center mr-3">
+                  🎤
+                </div>
+                <h3 className="text-lg font-bold">Vocal Remover</h3>
+              </div>
+              <p className="text-sm opacity-80">(Sploter 2x)</p>
+              <div className="mt-4 space-y-2">
+                <div className="flex items-center justify-between text-xs">
+                  <span>Quality</span>
+                  <span>High</span>
+                </div>
+                <div className="w-full bg-white/30 rounded-full h-2">
+                  <div className="bg-purple-600 h-2 rounded-full w-4/5"></div>
+                </div>
+              </div>
             </div>
 
-            <div className="relative z-10 p-12">
-              <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6 }}
-                className="text-center mb-16"
-              >
-                <h3 className="text-4xl font-bold mb-4 text-white">Trusted by Millions</h3>
-                <p className="text-xl text-gray-300 max-w-2xl mx-auto">
-                  Join the community of creators and professionals using ODOREMOVER
-                </p>
-              </motion.div>
-
-              {/* Stats Grid */}
-              <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-16">
-                {[
-                  { number: "1M+", label: "Files Processed", color: "text-green-400" },
-                  { number: "500K+", label: "Active Users", color: "text-blue-400" },
-                  { number: "99.9%", label: "Uptime", color: "text-purple-400" },
-                  { number: "10", label: "AI Tools", color: "text-yellow-400" }
-                ].map((stat, index) => (
-                  <motion.div
-                    key={index}
-                    className="text-center p-8 bg-white/5 backdrop-blur-md rounded-2xl border border-white/10 shadow-2xl"
-                    initial={{ opacity: 0, y: 30 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6, delay: index * 0.1 }}
-                    whileHover={{ scale: 1.05, rotateY: 5 }}
-                    style={{ transformStyle: "preserve-3d" }}
-                  >
-                    <div className={`text-4xl font-bold ${stat.color} mb-3`}>{stat.number}</div>
-                    <div className="text-gray-300 font-medium">{stat.label}</div>
-                  </motion.div>
-                ))}
+            <div className="bg-gradient-to-r from-green-300 to-blue-200 p-6 rounded-xl text-gray-800 hover:scale-105 transition-transform">
+              <div className="flex items-center mb-4">
+                <div className="w-8 h-8 bg-white/20 rounded-lg flex items-center justify-center mr-3">
+                  ⚡
+                </div>
+                <h3 className="text-lg font-bold">Audio Cutter + Tempo Changer</h3>
               </div>
-
-              {/* Feature Highlights */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
-                {[
-                  { icon: "🚀", title: "Lightning Fast", desc: "Process files in seconds with optimized algorithms" },
-                  { icon: "🎯", title: "Studio Quality", desc: "Professional-grade processing with zero quality loss" },
-                  { icon: "🔒", title: "100% Secure", desc: "Your files are processed locally and never stored" }
-                ].map((feature, index) => (
-                  <motion.div
-                    key={index}
-                    className="p-6 bg-gradient-to-br from-white/10 to-white/5 rounded-2xl border border-white/20 backdrop-blur-sm"
-                    initial={{ opacity: 0, x: index === 0 ? -30 : index === 1 ? 0 : 30, y: index === 1 ? -30 : 0 }}
-                    whileInView={{ opacity: 1, x: 0, y: 0 }}
-                    transition={{ duration: 0.6, delay: 0.2 + index * 0.1 }}
-                    whileHover={{ scale: 1.02, rotateX: 5 }}
-                    style={{ transformStyle: "preserve-3d" }}
-                  >
-                    <div className="text-3xl mb-4">{feature.icon}</div>
-                    <h4 className="text-xl font-semibold text-white mb-3">{feature.title}</h4>
-                    <p className="text-gray-300">{feature.desc}</p>
-                  </motion.div>
-                ))}
+              <p className="text-sm opacity-80">Precision editing tools</p>
+              <div className="mt-4 space-y-2">
+                <div className="flex items-center justify-between text-xs">
+                  <span>Speed</span>
+                  <span>Fast</span>
+                </div>
+                <div className="w-full bg-white/30 rounded-full h-2">
+                  <div className="bg-green-600 h-2 rounded-full w-3/4"></div>
+                </div>
               </div>
-
-              {/* Final CTA */}
-              <motion.div
-                className="text-center"
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.5 }}
-              >
-                <motion.button
-                  className="bg-gradient-to-r from-green-500 to-blue-600 text-white px-12 py-4 rounded-full font-bold text-lg shadow-2xl hover:shadow-green-500/25 transition-all duration-300"
-                  whileHover={{ scale: 1.05, boxShadow: "0 20px 40px rgba(34, 197, 94, 0.3)" }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  Transform Your Audio Today
-                </motion.button>
-                <p className="text-gray-400 mt-4">Free to start • No credit card required</p>
-              </motion.div>
             </div>
-          </div>
+
+            <div className="bg-gradient-to-r from-indigo-300 to-pink-200 p-6 rounded-xl text-gray-800 hover:scale-105 transition-transform">
+              <div className="flex items-center mb-4">
+                <div className="w-8 h-8 bg-white/20 rounded-lg flex items-center justify-center mr-3">
+                  🔗
+                </div>
+                <h3 className="text-lg font-bold">Audio Cutter / Joiner</h3>
+              </div>
+              <p className="text-sm opacity-80">Merge and split tracks</p>
+              <div className="mt-4 space-y-2">
+                <div className="flex items-center justify-between text-xs">
+                  <span>Precision</span>
+                  <span>Perfect</span>
+                </div>
+                <div className="w-full bg-white/30 rounded-full h-2">
+                  <div className="bg-indigo-600 h-2 rounded-full w-5/6"></div>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Controls with Sliders */}
+          <motion.div 
+            className="bg-gray-800 p-6 rounded-xl"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.6 }}
+          >
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-2">Volume Control</label>
+                <input 
+                  type="range" 
+                  className="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer slider-purple"
+                  defaultValue="75"
+                />
+                <div className="flex justify-between text-xs text-gray-500 mt-1">
+                  <span>0%</span>
+                  <span>100%</span>
+                </div>
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-2">Tempo Adjustment</label>
+                <input 
+                  type="range" 
+                  className="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer slider-orange"
+                  defaultValue="50"
+                />
+                <div className="flex justify-between text-xs text-gray-500 mt-1">
+                  <span>0.5x</span>
+                  <span>2.0x</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Bottom Gradient Buttons */}
+            <div className="flex flex-col sm:flex-row justify-center gap-4">
+              <button className="bg-gradient-to-r from-indigo-500 to-green-400 px-8 py-3 rounded-lg text-white font-semibold hover:scale-105 transition-transform shadow-lg">
+                Rasteco Rorretast
+              </button>
+              <button className="bg-gray-200 hover:bg-gray-300 px-8 py-3 rounded-lg text-black font-semibold transition-colors shadow-lg">
+                Sudon Cr'er Roao
+              </button>
+            </div>
+          </motion.div>
+
         </div>
       </section>
     </div>
