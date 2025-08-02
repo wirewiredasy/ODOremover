@@ -290,6 +290,66 @@ export default function PitchTempo({ darkMode }: PitchTempoProps) {
           </div>
         </motion.div>
       )}
+
+      {/* How to Use Section */}
+      <motion.div
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, delay: 0.3 }}
+        className={`mt-16 p-8 rounded-2xl ${
+          darkMode ? 'bg-gray-800/30 border border-gray-700' : 'bg-white/50 border border-gray-200'
+        } backdrop-blur-sm shadow-xl`}
+      >
+        <h2 className={`text-2xl font-bold mb-6 text-center ${
+          darkMode ? 'text-white' : 'text-gray-900'
+        }`}>
+          How to Use Pitch & Tempo Changer
+        </h2>
+        
+        <div className="grid md:grid-cols-3 gap-6">
+          <div className="text-center">
+            <div className={`w-16 h-16 rounded-2xl mx-auto mb-4 flex items-center justify-center ${
+              darkMode ? 'bg-blue-900/30' : 'bg-blue-100'
+            }`}>
+              <Upload className="w-8 h-8 text-blue-500" />
+            </div>
+            <h3 className={`font-semibold mb-2 ${darkMode ? 'text-white' : 'text-gray-900'}`}>
+              1. Upload File
+            </h3>
+            <p className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+              Upload your audio file. The tool works with music, vocals, and any audio content.
+            </p>
+          </div>
+          
+          <div className="text-center">
+            <div className={`w-16 h-16 rounded-2xl mx-auto mb-4 flex items-center justify-center ${
+              darkMode ? 'bg-cyan-900/30' : 'bg-cyan-100'
+            }`}>
+              <Music className="w-8 h-8 text-cyan-500" />
+            </div>
+            <h3 className={`font-semibold mb-2 ${darkMode ? 'text-white' : 'text-gray-900'}`}>
+              2. Adjust Controls
+            </h3>
+            <p className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+              Change pitch (-12 to +12 semitones) and tempo (50% to 200%) independently without quality loss.
+            </p>
+          </div>
+          
+          <div className="text-center">
+            <div className={`w-16 h-16 rounded-2xl mx-auto mb-4 flex items-center justify-center ${
+              darkMode ? 'bg-green-900/30' : 'bg-green-100'
+            }`}>
+              <Download className="w-8 h-8 text-green-500" />
+            </div>
+            <h3 className={`font-semibold mb-2 ${darkMode ? 'text-white' : 'text-gray-900'}`}>
+              3. Process & Download
+            </h3>
+            <p className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+              Preview changes before processing, then download your modified audio file.
+            </p>
+          </div>
+        </div>
+      </motion.div>
     </div>
   );
 }

@@ -310,6 +310,66 @@ export default function VocalRemover({ darkMode }: VocalRemoverProps) {
           </button>
         </div>
       )}
+
+      {/* How to Use Section */}
+      <motion.div
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, delay: 0.3 }}
+        className={`mt-16 p-8 rounded-2xl ${
+          darkMode ? 'bg-gray-800/30 border border-gray-700' : 'bg-white/50 border border-gray-200'
+        } backdrop-blur-sm shadow-xl`}
+      >
+        <h2 className={`text-2xl font-bold mb-6 text-center ${
+          darkMode ? 'text-white' : 'text-gray-900'
+        }`}>
+          How to Use Vocal Remover
+        </h2>
+        
+        <div className="grid md:grid-cols-3 gap-6">
+          <div className="text-center">
+            <div className={`w-16 h-16 rounded-2xl mx-auto mb-4 flex items-center justify-center ${
+              darkMode ? 'bg-pink-900/30' : 'bg-pink-100'
+            }`}>
+              <Upload className="w-8 h-8 text-pink-500" />
+            </div>
+            <h3 className={`font-semibold mb-2 ${darkMode ? 'text-white' : 'text-gray-900'}`}>
+              1. Upload Audio
+            </h3>
+            <p className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+              Drag and drop your audio file or click to browse. Supports MP3, WAV, FLAC, and M4A formats.
+            </p>
+          </div>
+          
+          <div className="text-center">
+            <div className={`w-16 h-16 rounded-2xl mx-auto mb-4 flex items-center justify-center ${
+              darkMode ? 'bg-purple-900/30' : 'bg-purple-100'
+            }`}>
+              <Settings className="w-8 h-8 text-purple-500" />
+            </div>
+            <h3 className={`font-semibold mb-2 ${darkMode ? 'text-white' : 'text-gray-900'}`}>
+              2. Choose Settings
+            </h3>
+            <p className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+              Select quality level and output format. Higher quality takes longer but produces better results.
+            </p>
+          </div>
+          
+          <div className="text-center">
+            <div className={`w-16 h-16 rounded-2xl mx-auto mb-4 flex items-center justify-center ${
+              darkMode ? 'bg-blue-900/30' : 'bg-blue-100'
+            }`}>
+              <Download className="w-8 h-8 text-blue-500" />
+            </div>
+            <h3 className={`font-semibold mb-2 ${darkMode ? 'text-white' : 'text-gray-900'}`}>
+              3. Download Results
+            </h3>
+            <p className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+              Get two separate files: vocals only and instrumental only. Both in high-quality WAV format.
+            </p>
+          </div>
+        </div>
+      </motion.div>
     </div>
   );
 }

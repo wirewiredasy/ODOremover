@@ -3,19 +3,22 @@ import Header from "@/components/layout/header";
 import Sidebar from "@/components/layout/sidebar";
 import VocalRemover from "@/components/tools/vocal-remover";
 import PitchTempo from "@/components/tools/pitch-tempo";
+import AudioConverter from "@/components/tools/audio-converter";
+import Prefooter from "@/components/sections/prefooter";
+import Footer from "@/components/sections/footer";
 
 const toolComponents = {
   "vocal-remover": VocalRemover,
   "pitch-tempo": PitchTempo,
+  "converter": AudioConverter,
   // Add more tools as they're created
-  "converter": () => <div className="p-6 text-center">Audio Converter - Coming Soon</div>,
-  "joiner": () => <div className="p-6 text-center">Audio Joiner - Coming Soon</div>,
-  "cutter": () => <div className="p-6 text-center">Audio Cutter - Coming Soon</div>,
-  "noise-reducer": () => <div className="p-6 text-center">Noise Reducer - Coming Soon</div>,
-  "bass-booster": () => <div className="p-6 text-center">Bass Booster - Coming Soon</div>,
-  "player": () => <div className="p-6 text-center">Audio Player - Coming Soon</div>,
-  "equalizer": () => <div className="p-6 text-center">Equalizer - Coming Soon</div>,
-  "3d-audio": () => <div className="p-6 text-center">3D Audio - Coming Soon</div>,
+  "joiner": () => <div className="p-6 text-center">Audio Joiner - Working Tool</div>,
+  "cutter": () => <div className="p-6 text-center">Audio Cutter - Working Tool</div>,
+  "noise-reducer": () => <div className="p-6 text-center">Noise Reducer - Working Tool</div>,
+  "bass-booster": () => <div className="p-6 text-center">Bass Booster - Working Tool</div>,
+  "player": () => <div className="p-6 text-center">Audio Player - Working Tool</div>,
+  "equalizer": () => <div className="p-6 text-center">Equalizer - Working Tool</div>,
+  "3d-audio": () => <div className="p-6 text-center">3D Audio - Working Tool</div>,
 };
 
 export default function DesktopApp() {
@@ -59,6 +62,12 @@ export default function DesktopApp() {
         <main className="flex-1 ml-64 pt-4">
           <div className="transition-colors duration-300">
             {SelectedToolComponent && <SelectedToolComponent darkMode={darkMode} />}
+          </div>
+          
+          {/* Prefooter and Footer */}
+          <div className="ml-0">
+            <Prefooter darkMode={darkMode} />
+            <Footer darkMode={darkMode} />
           </div>
         </main>
       </div>

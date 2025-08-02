@@ -71,7 +71,7 @@ export default function Header({ darkMode, toggleDarkMode }: HeaderProps) {
           </nav>
 
           {/* Controls */}
-          <div className="flex items-center space-x-3">
+          <div className="flex items-center space-x-4">
             {/* Dark Mode Toggle */}
             <button
               onClick={toggleDarkMode}
@@ -84,14 +84,19 @@ export default function Header({ darkMode, toggleDarkMode }: HeaderProps) {
               {darkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
             </button>
 
-            {/* Settings */}
-            <button className={`hidden sm:flex w-10 h-10 rounded-lg items-center justify-center transition-all duration-200 hover:scale-105 ${
-              darkMode 
-                ? 'bg-gray-800 text-gray-300 hover:bg-gray-700' 
-                : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-            }`}>
-              <Settings className="w-5 h-5" />
-            </button>
+            {/* Auth Buttons */}
+            <div className="hidden md:flex items-center space-x-3">
+              <button className={`px-4 py-2 rounded-lg font-medium transition-all duration-200 hover:scale-105 ${
+                darkMode 
+                  ? 'text-gray-300 hover:text-white hover:bg-gray-800' 
+                  : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
+              }`}>
+                Sign In
+              </button>
+              <button className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white px-4 py-2 rounded-lg font-medium transition-all duration-200 hover:scale-105 shadow-lg">
+                Sign Up
+              </button>
+            </div>
 
             {/* Mobile Menu Button */}
             <button

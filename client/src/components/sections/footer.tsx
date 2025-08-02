@@ -125,15 +125,43 @@ export default function Footer({ darkMode }: FooterProps) {
           whileInView={{ opacity: 1 }}
           transition={{ duration: 0.8 }}
           viewport={{ once: true }}
-          className={`pt-8 border-t text-center ${
+          className={`pt-8 border-t ${
             darkMode ? 'border-gray-700' : 'border-gray-200'
           }`}
         >
-          <p className={`text-sm ${
-            darkMode ? 'text-gray-400' : 'text-gray-600'
-          }`}>
-            © 2025 ODOREMOVER AI. All rights reserved.
-          </p>
+          <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+            <p className={`text-sm ${
+              darkMode ? 'text-gray-400' : 'text-gray-600'
+            }`}>
+              © 2025 ODOREMOVER AI. All rights reserved.
+            </p>
+            
+            <div className="flex items-center space-x-6 text-sm">
+              <a href="#home" className={`transition-colors ${
+                darkMode ? 'text-gray-400 hover:text-white' : 'text-gray-600 hover:text-gray-900'
+              }`}>
+                Home
+              </a>
+              <span className={darkMode ? 'text-gray-600' : 'text-gray-400'}>|</span>
+              <a href="#privacy" className={`transition-colors ${
+                darkMode ? 'text-gray-400 hover:text-white' : 'text-gray-600 hover:text-gray-900'
+              }`}>
+                Privacy
+              </a>
+              <span className={darkMode ? 'text-gray-600' : 'text-gray-400'}>|</span>
+              <a href="#terms" className={`transition-colors ${
+                darkMode ? 'text-gray-400 hover:text-white' : 'text-gray-600 hover:text-gray-900'
+              }`}>
+                Terms
+              </a>
+              <span className={darkMode ? 'text-gray-600' : 'text-gray-400'}>|</span>
+              <a href="#contact" className={`transition-colors ${
+                darkMode ? 'text-gray-400 hover:text-white' : 'text-gray-600 hover:text-gray-900'
+              }`}>
+                Contact
+              </a>
+            </div>
+          </div>
         </motion.div>
       </div>
     </footer>
