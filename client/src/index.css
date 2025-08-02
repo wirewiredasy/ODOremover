@@ -66,9 +66,9 @@
   body {
     @apply antialiased;
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-    background: #f9fafb;
+    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 50%, #e2e8f0 100%);
     min-height: 100vh;
-    color: #111827;
+    color: #1f2937;
     overflow-x: hidden;
   }
 

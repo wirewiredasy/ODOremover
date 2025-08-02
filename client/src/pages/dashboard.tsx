@@ -1,5 +1,5 @@
-import VocalRemover from "@/components/vocal-remover";
+import OdoremoverApp from "@/components/odoremover-app";
 
 export default function Dashboard() {
-  return <VocalRemover />;
+  return <OdoremoverApp />;
 }
