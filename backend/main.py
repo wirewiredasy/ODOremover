@@ -1,278 +1,214 @@
-from fastapi import FastAPI, HTTPException, UploadFile, File, BackgroundTasks
+from fastapi import FastAPI, File, UploadFile, Form, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
-import uvicorn
 import os
+import tempfile
 import shutil
-from pathlib import Path
+from typing import Optional
 import uuid
-from typing import Dict, Any, Optional
-import json
-from datetime import datetime
 
-from models import AudioFileModel, ProcessingJobModel, ProcessingStatus
-from services.vocal_remover import VocalRemoverService
-from services.pitch_tempo import PitchTempoService
-from services.converter import ConverterService
-from services.cutter_joiner import CutterJoinerService
-from services.noise_reduction import NoiseReductionService
-from services.volume_booster import VolumeBoosterService
-from services.fade import FadeService
-from services.metadata_editor import MetadataEditorService
-from services.reverse import ReverseService
+from services.vocal_separator import VocalSeparator
+from services.pitch_tempo import PitchTempoProcessor
 
-app = FastAPI(title="ODOREMOVER API", version="1.0.0")
+app = FastAPI(title="ODOREMOVER API", description="Professional Audio Processing API", version="1.0.0")
 
-# Configure CORS
+# CORS middleware
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=["*"],  # Configure for production
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
+# Initialize processors
+vocal_separator = VocalSeparator()
+pitch_tempo_processor = PitchTempoProcessor()
+
 # Create necessary directories
-os.makedirs("uploads", exist_ok=True)
-os.makedirs("processed", exist_ok=True)
-
-# In-memory storage (replace with database in production)
-audio_files: Dict[str, AudioFileModel] = {}
-processing_jobs: Dict[str, ProcessingJobModel] = {}
-
-# Initialize services
-services = {
-    "vocal_remover": VocalRemoverService(),
-    "pitch_tempo": PitchTempoService(),
-    "converter": ConverterService(),
-    "cutter_joiner": CutterJoinerService(),
-    "noise_reduction": NoiseReductionService(),
-    "volume_booster": VolumeBoosterService(),
-    "fade": FadeService(),
-    "metadata_editor": MetadataEditorService(),
-    "reverse": ReverseService(),
-}
+UPLOAD_DIR = "uploads"
+OUTPUT_DIR = "outputs"
+os.makedirs(UPLOAD_DIR, exist_ok=True)
+os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 @app.get("/")
 async def root():
-    return {"message": "ODOREMOVER FastAPI Backend", "version": "1.0.0"}
+    return {"message": "ODOREMOVER API - Professional Audio Processing"}
 
-@app.post("/process/{tool_name}")
-async def process_audio(
-    tool_name: str,
-    background_tasks: BackgroundTasks,
+@app.get("/health")
+async def health_check():
+    return {"status": "healthy", "services": ["vocal-separator", "pitch-tempo"]}
+
+# Vocal Separator Endpoints
+@app.post("/api/vocal-separator/process")
+async def separate_vocals(
     file: UploadFile = File(...),
-    parameters: Optional[str] = None
+    quality: str = Form("high")
 ):
-    """Process audio file with specified tool"""
+    """Separate vocals from instrumental track"""
+    if not file.filename.lower().endswith(('.mp3', '.wav', '.flac', '.m4a')):
+        raise HTTPException(status_code=400, detail="Unsupported audio format")
     
-    if tool_name not in services:
-        raise HTTPException(status_code=400, detail=f"Unknown tool: {tool_name}")
-    
-    # Generate unique job ID
-    job_id = str(uuid.uuid4())
-    
-    # Save uploaded file
-    file_extension = Path(file.filename).suffix
-    input_path = f"uploads/{job_id}_input{file_extension}"
-    
-    with open(input_path, "wb") as buffer:
-        shutil.copyfileobj(file.file, buffer)
-    
-    # Parse parameters
-    params = {}
-    if parameters:
-        try:
-            params = json.loads(parameters)
-        except json.JSONDecodeError:
-            raise HTTPException(status_code=400, detail="Invalid parameters JSON")
-    
-    # Create processing job
-    job = ProcessingJobModel(
-        id=job_id,
-        tool_name=tool_name,
-        input_file=input_path,
-        status=ProcessingStatus.PENDING,
-        parameters=params,
-        created_at=datetime.utcnow()
-    )
-    
-    processing_jobs[job_id] = job
-    
-    # Start background processing
-    background_tasks.add_task(process_file_background, job_id)
-    
-    return {"job_id": job_id, "status": "started"}
-
-async def process_file_background(job_id: str):
-    """Background task to process audio file"""
-    job = processing_jobs.get(job_id)
-    if not job:
-        return
+    # Generate unique session ID
+    session_id = str(uuid.uuid4())
+    session_dir = os.path.join(OUTPUT_DIR, session_id)
+    os.makedirs(session_dir, exist_ok=True)
     
     try:
-        # Update status to processing
-        job.status = ProcessingStatus.PROCESSING
-        job.progress = 10
-        
-        # Get the service for this tool
-        service = services[job.tool_name]
-        
-        # Generate output filename
-        output_extension = ".mp3"  # Default output format
-        if job.tool_name == "converter":
-            output_extension = job.parameters.get("output_format", ".mp3")
-        
-        output_path = f"processed/{job_id}_output{output_extension}"
-        
-        # Update progress
-        job.progress = 25
+        # Save uploaded file
+        input_path = os.path.join(UPLOAD_DIR, f"{session_id}_{file.filename}")
+        with open(input_path, "wb") as buffer:
+            shutil.copyfileobj(file.file, buffer)
         
         # Process the file
-        result = await service.process(job.input_file, output_path, job.parameters)
+        result = vocal_separator.process_file(input_path, session_dir, quality)
         
-        if result.get("success"):
-            job.status = ProcessingStatus.COMPLETED
-            job.progress = 100
-            job.output_file = output_path
-            job.completed_at = datetime.utcnow()
-            job.result_metadata = result.get("metadata", {})
+        if result["success"]:
+            return {
+                "session_id": session_id,
+                "success": True,
+                "vocals_url": f"/api/download/{session_id}/vocals",
+                "instrumental_url": f"/api/download/{session_id}/instrumental",
+                "duration": result["duration"],
+                "sample_rate": result["sample_rate"]
+            }
         else:
-            job.status = ProcessingStatus.FAILED
-            job.error_message = result.get("error", "Processing failed")
+            raise HTTPException(status_code=500, detail=result["error"])
             
     except Exception as e:
-        job.status = ProcessingStatus.FAILED
-        job.error_message = str(e)
-        job.progress = 0
+        raise HTTPException(status_code=500, detail=str(e))
+    finally:
+        # Clean up uploaded file
+        if os.path.exists(input_path):
+            os.remove(input_path)
 
-@app.get("/jobs/{job_id}")
-async def get_job_status(job_id: str):
-    """Get processing job status"""
-    job = processing_jobs.get(job_id)
-    if not job:
-        raise HTTPException(status_code=404, detail="Job not found")
-    
-    return {
-        "id": job.id,
-        "tool_name": job.tool_name,
-        "status": job.status.value,
-        "progress": job.progress,
-        "error_message": job.error_message,
-        "created_at": job.created_at.isoformat(),
-        "completed_at": job.completed_at.isoformat() if job.completed_at else None,
-        "result_metadata": job.result_metadata
-    }
+@app.get("/api/vocal-separator/info")
+async def get_audio_info(file: UploadFile = File(...)):
+    """Get audio file information"""
+    try:
+        # Save temporary file
+        with tempfile.NamedTemporaryFile(delete=False, suffix=os.path.splitext(file.filename)[1]) as tmp:
+            shutil.copyfileobj(file.file, tmp)
+            info = vocal_separator.get_audio_info(tmp.name)
+        
+        os.unlink(tmp.name)
+        return info
+        
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
-@app.get("/jobs")
-async def list_jobs():
-    """List all processing jobs"""
-    return [
-        {
-            "id": job.id,
-            "tool_name": job.tool_name,
-            "status": job.status.value,
-            "progress": job.progress,
-            "created_at": job.created_at.isoformat(),
-            "completed_at": job.completed_at.isoformat() if job.completed_at else None,
-        }
-        for job in processing_jobs.values()
-    ]
-
-@app.get("/download/{job_id}")
-async def download_result(job_id: str):
-    """Download processed file"""
-    job = processing_jobs.get(job_id)
-    if not job:
-        raise HTTPException(status_code=404, detail="Job not found")
+# Pitch & Tempo Endpoints
+@app.post("/api/pitch-tempo/process")
+async def process_pitch_tempo(
+    file: UploadFile = File(...),
+    pitch_semitones: float = Form(0),
+    tempo_percent: float = Form(0),
+    quality: str = Form("high")
+):
+    """Change pitch and tempo of audio file"""
+    if not file.filename.lower().endswith(('.mp3', '.wav', '.flac', '.m4a')):
+        raise HTTPException(status_code=400, detail="Unsupported audio format")
     
-    if job.status != ProcessingStatus.COMPLETED or not job.output_file:
-        raise HTTPException(status_code=400, detail="Job not completed or no output file")
+    session_id = str(uuid.uuid4())
+    session_dir = os.path.join(OUTPUT_DIR, session_id)
+    os.makedirs(session_dir, exist_ok=True)
     
-    if not os.path.exists(job.output_file):
-        raise HTTPException(status_code=404, detail="Output file not found")
-    
-    return FileResponse(
-        job.output_file,
-        media_type="audio/mpeg",
-        filename=f"{job.tool_name}_output.mp3"
-    )
-
-@app.get("/tools")
-async def list_tools():
-    """List available processing tools"""
-    return {
-        "tools": [
-            {
-                "name": "vocal_remover",
-                "display_name": "Vocal Remover",
-                "description": "Separate vocals from instrumentals using AI",
-                "parameters": {
-                    "model": {"type": "string", "default": "spleeter:2stems-16kHz", "options": ["spleeter:2stems-16kHz", "spleeter:4stems-16kHz"]}
-                }
-            },
-            {
-                "name": "pitch_tempo",
-                "display_name": "Pitch & Tempo",
-                "description": "Adjust pitch and tempo independently",
-                "parameters": {
-                    "pitch_shift": {"type": "float", "default": 0.0, "range": [-12.0, 12.0]},
-                    "tempo_change": {"type": "float", "default": 1.0, "range": [0.5, 2.0]}
-                }
-            },
-            {
-                "name": "converter",
-                "display_name": "Format Converter",
-                "description": "Convert between audio formats",
-                "parameters": {
-                    "output_format": {"type": "string", "default": ".mp3", "options": [".mp3", ".wav", ".flac"]},
-                    "bitrate": {"type": "int", "default": 128, "options": [128, 192, 256, 320]}
-                }
-            },
-            {
-                "name": "noise_reduction",
-                "display_name": "Noise Reduction",
-                "description": "Remove background noise and artifacts",
-                "parameters": {
-                    "noise_reduction_strength": {"type": "float", "default": 0.5, "range": [0.1, 1.0]}
-                }
-            },
-            {
-                "name": "volume_booster",
-                "display_name": "Volume Booster",
-                "description": "Boost and normalize audio levels",
-                "parameters": {
-                    "target_lufs": {"type": "float", "default": -14.0, "range": [-30.0, -6.0]},
-                    "normalize": {"type": "boolean", "default": True}
-                }
+    try:
+        # Save uploaded file
+        input_path = os.path.join(UPLOAD_DIR, f"{session_id}_{file.filename}")
+        with open(input_path, "wb") as buffer:
+            shutil.copyfileobj(file.file, buffer)
+        
+        # Generate output path
+        output_filename = f"processed_{file.filename}"
+        output_path = os.path.join(session_dir, output_filename)
+        
+        # Process the file
+        result = pitch_tempo_processor.process_file(
+            input_path, output_path, pitch_semitones, tempo_percent, quality
+        )
+        
+        if result["success"]:
+            return {
+                "session_id": session_id,
+                "success": True,
+                "download_url": f"/api/download/{session_id}/processed",
+                "original_duration": result["original_duration"],
+                "new_duration": result["new_duration"],
+                "pitch_change": result["pitch_change"],
+                "tempo_change": result["tempo_change"]
             }
-        ]
-    }
+        else:
+            raise HTTPException(status_code=500, detail=result["error"])
+            
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+    finally:
+        if os.path.exists(input_path):
+            os.remove(input_path)
 
-@app.delete("/jobs/{job_id}")
-async def delete_job(job_id: str):
-    """Delete processing job and associated files"""
-    job = processing_jobs.get(job_id)
-    if not job:
-        raise HTTPException(status_code=404, detail="Job not found")
+@app.post("/api/pitch-tempo/analyze")
+async def analyze_audio_file(file: UploadFile = File(...)):
+    """Analyze audio file properties"""
+    try:
+        with tempfile.NamedTemporaryFile(delete=False, suffix=os.path.splitext(file.filename)[1]) as tmp:
+            shutil.copyfileobj(file.file, tmp)
+            analysis = pitch_tempo_processor.analyze_audio(tmp.name)
+        
+        os.unlink(tmp.name)
+        return analysis
+        
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+# Download Endpoints
+@app.get("/api/download/{session_id}/vocals")
+async def download_vocals(session_id: str):
+    """Download separated vocals"""
+    session_dir = os.path.join(OUTPUT_DIR, session_id)
+    vocals_files = [f for f in os.listdir(session_dir) if f.endswith('_vocals.wav')]
     
-    # Clean up files
-    if os.path.exists(job.input_file):
-        os.remove(job.input_file)
+    if not vocals_files:
+        raise HTTPException(status_code=404, detail="Vocals file not found")
     
-    if job.output_file and os.path.exists(job.output_file):
-        os.remove(job.output_file)
+    file_path = os.path.join(session_dir, vocals_files[0])
+    return FileResponse(file_path, filename=vocals_files[0], media_type='audio/wav')
+
+@app.get("/api/download/{session_id}/instrumental")
+async def download_instrumental(session_id: str):
+    """Download separated instrumental"""
+    session_dir = os.path.join(OUTPUT_DIR, session_id)
+    instrumental_files = [f for f in os.listdir(session_dir) if f.endswith('_instrumental.wav')]
     
-    # Remove from memory
-    del processing_jobs[job_id]
+    if not instrumental_files:
+        raise HTTPException(status_code=404, detail="Instrumental file not found")
     
-    return {"message": "Job deleted successfully"}
+    file_path = os.path.join(session_dir, instrumental_files[0])
+    return FileResponse(file_path, filename=instrumental_files[0], media_type='audio/wav')
+
+@app.get("/api/download/{session_id}/processed")
+async def download_processed(session_id: str):
+    """Download processed audio file"""
+    session_dir = os.path.join(OUTPUT_DIR, session_id)
+    processed_files = [f for f in os.listdir(session_dir) if f.startswith('processed_')]
+    
+    if not processed_files:
+        raise HTTPException(status_code=404, detail="Processed file not found")
+    
+    file_path = os.path.join(session_dir, processed_files[0])
+    return FileResponse(file_path, filename=processed_files[0], media_type='audio/wav')
+
+# Cleanup endpoint
+@app.delete("/api/cleanup/{session_id}")
+async def cleanup_session(session_id: str):
+    """Clean up session files"""
+    session_dir = os.path.join(OUTPUT_DIR, session_id)
+    if os.path.exists(session_dir):
+        shutil.rmtree(session_dir)
+        return {"message": "Session cleaned up successfully"}
+    else:
+        raise HTTPException(status_code=404, detail="Session not found")
 
 if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 8000))
-    uvicorn.run(
-        "main:app",
-        host="0.0.0.0",
-        port=port,
-        reload=True if os.environ.get("NODE_ENV") == "development" else False
-    )
+    import uvicorn
+    uvicorn.run(app, host="0.0.0.0", port=8000)
