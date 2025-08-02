@@ -356,6 +356,146 @@ export default function DesktopApp() {
         )}
       </main>
 
+      {/* Pre-Footer Section */}
+      <section className={`py-20 px-6 ${
+        darkMode 
+          ? 'bg-gradient-to-br from-gray-800 to-gray-900' 
+          : 'bg-gradient-to-br from-gray-50 to-blue-50'
+      }`}>
+        <div className="max-w-7xl mx-auto">
+          {/* Stats Section */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
+            className="text-center mb-16"
+          >
+            <h2 className={`text-4xl md:text-5xl font-bold mb-4 ${
+              darkMode ? 'text-white' : 'text-gray-900'
+            }`}>
+              Trusted by Audio Professionals
+            </h2>
+            <p className={`text-xl mb-12 max-w-3xl mx-auto ${
+              darkMode ? 'text-gray-300' : 'text-gray-600'
+            }`}>
+              Join thousands of creators who trust ODOREMOVER for their audio processing needs
+            </p>
+            
+            {/* Stats Grid */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+              {[
+                { number: "1M+", label: "Files Processed" },
+                { number: "50K+", label: "Happy Users" },
+                { number: "99.9%", label: "Success Rate" },
+                { number: "24/7", label: "Available" }
+              ].map((stat, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: index * 0.1 }}
+                  viewport={{ once: true }}
+                  className={`p-6 rounded-2xl ${
+                    darkMode 
+                      ? 'bg-gray-700/30 border border-gray-600' 
+                      : 'bg-white/70 border border-gray-200'
+                  } backdrop-blur-sm`}
+                >
+                  <div className={`text-3xl md:text-4xl font-bold mb-2 bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent`}>
+                    {stat.number}
+                  </div>
+                  <p className={`text-sm ${
+                    darkMode ? 'text-gray-400' : 'text-gray-600'
+                  }`}>
+                    {stat.label}
+                  </p>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
+
+          {/* Features Highlight */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.3 }}
+            viewport={{ once: true }}
+            className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16"
+          >
+            {[
+              {
+                icon: "🔒",
+                title: "100% Private",
+                description: "Your files never leave your device. Complete privacy guaranteed."
+              },
+              {
+                icon: "🚀",
+                title: "AI-Powered",
+                description: "Advanced machine learning for professional-quality results."
+              },
+              {
+                icon: "⚡",
+                title: "Lightning Fast",
+                description: "Optimized processing for quick turnaround times."
+              }
+            ].map((feature, index) => (
+              <div
+                key={index}
+                className={`text-center p-8 rounded-2xl ${
+                  darkMode 
+                    ? 'bg-gray-800/30 border border-gray-700' 
+                    : 'bg-white/50 border border-gray-200'
+                } backdrop-blur-sm hover:scale-105 transition-transform duration-300`}
+              >
+                <div className="text-4xl mb-4">{feature.icon}</div>
+                <h4 className={`text-xl font-semibold mb-3 ${
+                  darkMode ? 'text-white' : 'text-gray-900'
+                }`}>
+                  {feature.title}
+                </h4>
+                <p className={`leading-relaxed ${
+                  darkMode ? 'text-gray-400' : 'text-gray-600'
+                }`}>
+                  {feature.description}
+                </p>
+              </div>
+            ))}
+          </motion.div>
+
+          {/* Call to Action */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.5 }}
+            viewport={{ once: true }}
+            className={`text-center p-12 rounded-3xl ${
+              darkMode 
+                ? 'bg-gradient-to-r from-blue-900/30 to-purple-900/30 border border-gray-700' 
+                : 'bg-gradient-to-r from-blue-50 to-purple-50 border border-gray-200'
+            } backdrop-blur-sm`}
+          >
+            <h3 className={`text-3xl font-bold mb-4 ${
+              darkMode ? 'text-white' : 'text-gray-900'
+            }`}>
+              Ready to Transform Your Audio?
+            </h3>
+            <p className={`text-lg mb-8 max-w-2xl mx-auto ${
+              darkMode ? 'text-gray-300' : 'text-gray-600'
+            }`}>
+              Start processing your audio files with our AI-powered tools. 
+              No signup required, completely free to use.
+            </p>
+            <button
+              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+              className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white px-8 py-4 rounded-2xl font-semibold transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105"
+            >
+              Get Started Now
+            </button>
+          </motion.div>
+        </div>
+      </section>
+
       {/* Footer */}
       <Footer darkMode={darkMode} />
     </div>
