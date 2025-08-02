@@ -65,10 +65,10 @@
 
   body {
     @apply antialiased;
-    font-family: 'Space Grotesk', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-    background: #000000;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: #f9fafb;
     min-height: 100vh;
-    color: #ffffff;
+    color: #111827;
     overflow-x: hidden;
   }
 

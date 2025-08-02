@@ -8,6 +8,14 @@ ODOREMOVER is a modern web-based audio processing platform that provides AI-powe
 
 Preferred communication style: Simple, everyday language.
 
+## Recent Changes (January 2025)
+- **UI Redesign**: Completely redesigned interface to match voice.ai vocal remover style
+- **Minimal Design**: Implemented clean, professional UI with neutral colors (gray, white, soft blues)
+- **Simplified Layout**: 3-step process (Upload → Process → Download) with progress indicators
+- **Focused Functionality**: Single-purpose vocal remover tool instead of multi-tool platform
+- **Responsive Design**: Mobile-friendly layout with modern typography (Inter font)
+- **Static 3D Elements**: Subtle shadows, border radius, and soft hover effects without excessive animations
+
 ## System Architecture
 
 ### Frontend Architecture
