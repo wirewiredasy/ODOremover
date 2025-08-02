@@ -1,5 +1,5 @@
-import OdoremoverApp from "@/components/odoremover-app";
+import MainApp from "@/components/main-app";
 
 export default function Dashboard() {
-  return <OdoremoverApp />;
+  return <MainApp />;
 }
